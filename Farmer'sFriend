@@ -1,0 +1,46 @@
+#include "DHT.h"
+
+DHT dht;
+
+int CO2_Value;
+int H2_Value;
+int Nh3_Value;
+
+
+void setup()
+{
+  Serial.begin(9600);
+  Serial.println();
+  Serial.println(" Status\tHumidity (%)\tTemperature (C)\t(F)\CO2  (PPM)\tH2 (Qubic meter)\tNh3 (Qubic meter)");
+
+  dht.setup(7); // data pin 7
+}
+
+void loop()
+{
+  delay(dht.getMinimumSamplingPeriod());
+
+  CO2_Value = analogRead(1); //reads analog input pin 1
+  
+  H2_Value = analogRead(0); //reads analog input pin 0
+  
+  Nh3_Value =analogRead(0); //reads analog input pin 0
+  
+
+  float humidity = dht.getHumidity();
+  float temperature = dht.getTemperature();
+
+  Serial.print(dht.getStatusString());
+  Serial.print("\t");
+  Serial.print(humidity, 1);
+  Serial.print("\t\t");
+  Serial.print(temperature, 1);
+  Serial.print("\t\t");
+  Serial.print(dht.toFahrenheit(temperature), 1);
+  Serial.print(CO2_Value, DEC); //prints the value read
+  Serial.print("\t\t");
+  Serial.print(H2_Value, DEC); //prints the value read
+  Serial.print("\t\t\t");
+  Serial.println(Nh3_Value, DEC); //prints the value read
+ 
+}
